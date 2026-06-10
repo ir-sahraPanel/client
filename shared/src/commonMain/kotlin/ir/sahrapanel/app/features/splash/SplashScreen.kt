@@ -11,24 +11,45 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
-import ir.sahrapanel.app.Platform
+import ir.sahrapanel.app.core.domain.platform.Platform
+import ir.sahrapanel.app.core.domain.platform.PlatformType
+
 import ir.sahrapanel.app.core.ui.theme.SahraPanelTheme
-import ir.sahrapanel.app.getPlatform
+import ir.sahrapanel.app.shared.BuildKonfig
+
 import kotlinx.serialization.Serializable
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
 data object SplashRoute : NavKey
 
-// ✅ receiver باید Any باشد نه SplashScreen
-fun EntryProviderScope<NavKey>.splashEntry() {
+
+fun EntryProviderScope<NavKey>.splashEntry(
+    navigateToAuth: () -> Unit,
+    navigateToHome: () -> Unit
+) {
     entry<SplashRoute> {
-            SplashScreen(getPlatform())
+
+        val platform = koinInject<Platform>()
+        val viewModel = koinViewModel<SplashViewModel>()
+        LaunchedEffect(Unit) {
+            viewModel.onEvent(SplashEvent.CheckUserIsLogin)
+            viewModel.effect.collect {
+                when (it) {
+                    SplashEffect.NavigateToAuth -> navigateToAuth()
+                    SplashEffect.NavigateToHome -> navigateToHome()
+                }
+            }
+        }
+        SplashScreen(platform)
     }
 }
 
@@ -62,7 +83,13 @@ fun SplashScreen(platform : Platform) {
 @Preview
 fun SplashScreenPreview(){
     SahraPanelTheme {
-        SplashScreen(getPlatform())
+        SplashScreen(
+            platform = object : Platform {
+                override val name = "Android"
+                override val version = BuildKonfig.APP_VERSION
+                override val type = PlatformType.ANDROID
+            }
+        )
     }
 }
 

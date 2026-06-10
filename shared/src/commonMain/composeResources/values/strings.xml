@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+        <string name="error_unknown">خطایی رخ داده است. لطفاً دوباره تلاش کنید.</string>
+        <string name="error_no_internet">اتصال به اینترنت برقرار نیست. شبکه خود را بررسی کنید.</string>
+        <string name="error_timeout">پاسخی از سرور دریافت نشد. لطفاً دوباره تلاش کنید.</string>
+        <string name="error_invalid_phone">فرمت شماره تلفن وارد شده معتبر نیست.</string>
+        <string name="welcome">خوش آمدید</string>
+        <string name="enter_phone_number">لطفا شماره تلفن خود را برای ورود وارد کنید.</string>
+        <string name="phone_number">شماره تلفن</string>
+        <string name="login">ورود</string>
+        <string name="send_code">ارسال کد</string>
+        <string name="request_otp">دریافت کد تایید</string>
+        <string name="verification_code">کد تایید</string>
+        <string name="enter_verification_code">لطفا کد تایید را وارد کنید.</string>
+        <string name="verify">تایید</string>
+        <string name="resend_code">ارسال مجدد کد</string>
+        <string name="app_name">صحرا</string>
+        <string name="app_desc">مدیریت هوشمند و بی‌نقص سالن زیبایی شما، به سادگی صحرا.</string>
+        <string name="verification_code_send">کد چهار رقمی به شماره %1$s ارسال شد.</string>
+        <string name="change_phone_number">تغییر شماره تلفن</string>
+        <string name="did_not_receive_code">کد را دریافت نکردید؟</string>
+        <string name="timer_text">%1$s تا ارسال مجدد کد</string>
 </resources>

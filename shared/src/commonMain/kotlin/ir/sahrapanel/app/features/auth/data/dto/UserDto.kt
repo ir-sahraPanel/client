@@ -1,4 +1,4 @@
-package ir.sahrapanel.app.features.auth
+package ir.sahrapanel.app.features.auth.data.dto
 
 import kotlinx.serialization.Serializable
 

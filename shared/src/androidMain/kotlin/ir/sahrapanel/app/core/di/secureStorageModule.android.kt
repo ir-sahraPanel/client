@@ -10,11 +10,12 @@ import ir.sahrapanel.app.core.data.local.secure_storage.SecureStorageKey
 import kotlinx.coroutines.flow.firstOrNull
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.create
 
 
 actual val secureStorageModule: Module
     get() = module {
-        single<SecureStorage> { AndroidSecureStorage(get()) }
+        single<SecureStorage> { create(::AndroidSecureStorage)  }
     }
 
 

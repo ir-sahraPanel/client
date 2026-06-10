@@ -9,33 +9,12 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room3)
- //  alias(libs.plugins.koin.compiler)
+   alias(libs.plugins.koin.compiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.codingfeline.buildkonfig)
 }
 
 
-buildkonfig{
-    packageName =  "ir.sahrapanel.app.shared"
-
-    defaultConfigs {
-            buildConfigField(
-                type = STRING,
-                name = "BASE_URL",
-                value = "\"http://0.0.0.0:8080/\""
-            )
-    }
-    targetConfigs{
-        create("android"){
-            buildConfigField(
-                type = STRING,
-                name = "BASE_URL",
-                value = "\"http://10.0.2.2:8080/\""
-            )
-        }
-    }
-
-}
 kotlin {
 
     jvm()
@@ -56,6 +35,7 @@ kotlin {
         androidResources {
             enable = true
         }
+
         withHostTest {
             isIncludeAndroidResources = true
         }
@@ -109,6 +89,9 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.auth)
 
+            //kermit
+            implementation(libs.kermit)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -142,7 +125,7 @@ room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
-/*
+
 koinCompiler {
     userLogs = true
     debugLogs = true
@@ -151,4 +134,30 @@ koinCompiler {
         skipDefaultValues = true   // Enabled by default
 
 }
-*/
+
+buildkonfig{
+    packageName =  "ir.sahrapanel.app.shared"
+
+    defaultConfigs {
+        buildConfigField(
+            type = STRING,
+            name = "BASE_URL",
+            value = "http://127.0.0.1:8080/api/"
+        )
+        buildConfigField(
+            type = STRING,
+            name = "APP_VERSION",
+            value = libs.versions.appVersion.get()
+        )
+    }
+    targetConfigs{
+        create("android"){
+            buildConfigField(
+                type = STRING,
+                name = "BASE_URL",
+                value = "http://10.0.2.2:8080/api/"
+            )
+        }
+    }
+
+}

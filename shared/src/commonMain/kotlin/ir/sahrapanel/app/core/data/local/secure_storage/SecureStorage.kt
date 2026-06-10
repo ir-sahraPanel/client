@@ -6,6 +6,5 @@ interface SecureStorage {
     suspend fun clear()
 }
 enum class SecureStorageKey(val key: String) {
-    ACCESS_TOKEN("access_token"),
-    REFRESH_TOKEN("refresh_token")   // easy to extend
+    USER_TOKEN("user_token")
 }

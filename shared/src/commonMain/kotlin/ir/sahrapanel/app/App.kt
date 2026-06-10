@@ -46,9 +46,7 @@ import kotlinx.coroutines.launch
 @Preview
 fun SahraPanel() {
     SahraPanelTheme {
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl){
             AppRoutes()
-        }
     }
 
 }

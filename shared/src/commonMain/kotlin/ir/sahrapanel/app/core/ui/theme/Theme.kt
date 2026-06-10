@@ -6,8 +6,11 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -265,11 +268,12 @@ fun SahraPanelTheme(
       darkTheme -> darkScheme
       else -> lightScheme
   }
-
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = AppTypography(),
-    content = content
-  )
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = AppTypography(),
+            content = content
+        )
+    }
 }
 

@@ -1,11 +1,10 @@
-package ir.sahrapanel.app.features.auth
+package ir.sahrapanel.app.features.auth.domain.model
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-data class TokenDto(
+data class AuthToken(
     val accessToken: String,
     val refreshToken: String,
     val accessTokenExpire: LocalDateTime,
