@@ -30,3 +30,8 @@ DerivedData/
 # Web
 node_modules/
 .kotlin/
+/sahra_panel.db
+/sahra_panel.db.lck
+/sahra_panel.db-shm
+/sahra_panel.db-wal
+/.claude/skills/figma-implement-design/SKILL.md
