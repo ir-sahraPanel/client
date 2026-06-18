@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package ir.sahrapanel.app.core.data.remote
 
 import io.ktor.client.*
@@ -10,17 +12,22 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.AttributeKey
+import ir.sahrapanel.app.core.data.local.db.dao.UserTokenDao
 import ir.sahrapanel.app.core.data.local.secure_storage.UserStorage
 import ir.sahrapanel.app.core.domain.platform.Platform
 import ir.sahrapanel.app.core.domain.platform.PlatformType
 import ir.sahrapanel.app.features.auth.data.dto.RefreshTokenRequest
 import ir.sahrapanel.app.features.auth.data.dto.UserTokenDto
 import ir.sahrapanel.app.features.auth.data.dto.toDomain
+import ir.sahrapanel.app.features.auth.data.dto.toEntity
+import kotlin.uuid.ExperimentalUuidApi
 
 fun HttpClientConfig<*>.installAuthInterceptor(
-    userStorage: UserStorage,
-    platform: Platform
+    userTokenDao: UserTokenDao,
+    platform: Platform,
+    baseUrl: String
 ) {
+
     install(Auth) {
         bearer {
             // ۱. بارگذاری توکن‌ها
@@ -28,8 +35,9 @@ fun HttpClientConfig<*>.installAuthInterceptor(
                 if (platform.type == PlatformType.WASM) {
                     null
                 } else {
-                    val accessToken = userStorage.getAccessToken()
-                    val refreshToken = userStorage.getRefreshToken()
+                    val userToken =  userTokenDao.getCurrentUserToken()
+                    val accessToken =userToken?.accessToken
+                    val refreshToken = userToken?.refreshToken
                     if (accessToken != null && refreshToken != null) {
                         BearerTokens(accessToken, refreshToken)
                     } else null
@@ -49,13 +57,13 @@ fun HttpClientConfig<*>.installAuthInterceptor(
                         install(HttpCookies)
                     }
 
-                    val response = refreshClient.post("https://your-thesalonapp.ir/api/auth/token/refresh") {
+                    val response = refreshClient.post("${baseUrl}api/auth/token/refresh") {
                         contentType(ContentType.Application.Json)
 
                         if (platform.type == PlatformType.WASM) {
                             attributes.put(AttributeKey("withCredentials"), true)
                         } else {
-                            val localRefreshToken = userStorage.getRefreshToken() ?: ""
+                            val localRefreshToken = userTokenDao.getCurrentUserToken()?.refreshToken ?: ""
                             setBody(RefreshTokenRequest(localRefreshToken))
                         }
                     }
@@ -64,7 +72,7 @@ fun HttpClientConfig<*>.installAuthInterceptor(
                         val baseResponse = response.body<UserTokenDto>()
 
                         if (platform.type != PlatformType.WASM) {
-                            userStorage.saveUserToken(baseResponse.toDomain())
+                            userTokenDao.insertOrUpdateToken(baseResponse.toEntity())
                         }
 
                         BearerTokens(

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -34,25 +35,31 @@ data object SplashRoute : NavKey
 
 fun EntryProviderScope<NavKey>.splashEntry(
     navigateToAuth: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToDashboard: () -> Unit,
+    navigateToCreateSalon:()-> Unit
 ) {
     entry<SplashRoute> {
 
         val platform = koinInject<Platform>()
         val viewModel = koinViewModel<SplashViewModel>()
+        SplashScreen(platform)
         LaunchedEffect(Unit) {
+            // Fire the event
             viewModel.onEvent(SplashEvent.CheckUserIsLogin)
+        }
+        LaunchedEffect(Unit) {
             viewModel.effect.collect {
                 when (it) {
                     SplashEffect.NavigateToAuth -> navigateToAuth()
-                    SplashEffect.NavigateToHome -> navigateToHome()
+                    SplashEffect.NavigateToDashboard -> navigateToDashboard()
+                    SplashEffect.NavigateToCreateSalon -> navigateToCreateSalon()
                 }
             }
         }
-        SplashScreen(platform)
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplashScreen(platform : Platform) {
     Scaffold{paddingValues ->

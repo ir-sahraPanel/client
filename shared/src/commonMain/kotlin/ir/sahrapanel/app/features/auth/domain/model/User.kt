@@ -1,11 +1,14 @@
 package ir.sahrapanel.app.features.auth.domain.model
 
 import kotlinx.serialization.Serializable
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
-@Serializable
+@OptIn(ExperimentalUuidApi::class)
 data class User(
-    val id: String,
+    val id: Uuid,
     val phoneNumber: String,
-    val name: String? = null,
+    val firstName: String = "",
+    val lastName: String = "",
     val isActive: Boolean = true,
 )

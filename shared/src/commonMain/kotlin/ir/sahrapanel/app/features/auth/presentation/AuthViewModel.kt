@@ -2,7 +2,6 @@ package ir.sahrapanel.app.features.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ir.sahrapanel.app.core.AppUiError
 import ir.sahrapanel.app.core.data.remote.toTranslatableText
 import ir.sahrapanel.app.core.domain.isPhoneNumber
 import ir.sahrapanel.app.core.ui.components.TranslatableText
@@ -36,8 +35,19 @@ class AuthViewModel(
 
 
     fun onEvent(event: AuthEvent) = when (event) {
-        is AuthEvent.PhoneChanged -> _state.update { it.copy(phoneNumber = event.value) }
-        is AuthEvent.OtpChanged -> _state.update { it.copy(enteredOtpCode = event.value) }
+        is AuthEvent.PhoneChanged -> _state.update {
+            it.copy(
+                phoneNumber = event.value,
+                errors = it.errors - AuthErrorTarget.PhoneNumber
+            )
+        }
+
+        is AuthEvent.OtpChanged -> _state.update {
+            it.copy(
+                enteredOtpCode = event.value,
+                errors = it.errors - AuthErrorTarget.OtpCode
+            )
+        }
         AuthEvent.RequestOtp -> requestOtp()
         AuthEvent.ConfirmOtp -> confirmOtp()
 
@@ -50,8 +60,6 @@ class AuthViewModel(
 
             }
         }
-
-        AuthEvent.ClearError -> _state.update { it.copy(error = null) }
         AuthEvent.ChangePhoneNumber -> viewModelScope.launch { _effect.send(AuthEffect.NavigateToPhoneEntry) }
         AuthEvent.StartResendTimer -> {
             if (_state.value.timerValue == 0) {
@@ -84,17 +92,14 @@ class AuthViewModel(
         if (!currentPhone.isPhoneNumber()) {
             _state.update {
                 it.copy(
-                    error = AppUiError.FieldError(
-                        AuthErrorTarget.PhoneNumber,
-                        message = TranslatableText.Resource(Res.string.error_invalid_phone)
+                    errors = mapOf(
+                        AuthErrorTarget.PhoneNumber to
+                                TranslatableText.Resource(Res.string.error_invalid_phone)
                     )
                 )
             }
             return@launch
         }
-
-        // 2. Start Loading & Clear previous errors
-        _state.update { it.copy(isLoading = true, error = null) }
 
         try {
             // 3. Await Network Response
@@ -105,8 +110,8 @@ class AuthViewModel(
                 .onFailure { e ->
                     _state.update {
                         it.copy(
-                            error = AppUiError.FieldError(
-                                AuthErrorTarget.PhoneNumber,
+                            errors = mapOf(
+                                AuthErrorTarget.PhoneNumber to
                                 e.toTranslatableText()
                             )
                         )
@@ -126,8 +131,8 @@ class AuthViewModel(
         if (currentOtp.isBlank()) {
             _state.update {
                 it.copy(
-                    error = AppUiError.FieldError(
-                        AuthErrorTarget.OtpCode,
+                    errors = mapOf(
+                        AuthErrorTarget.OtpCode to
                         TranslatableText.Resource(Res.string.enter_verification_code)
                     )
                 )
@@ -135,29 +140,28 @@ class AuthViewModel(
             return@launch
         }
 
-        // 2. Start Loading & Clear previous errors
-        _state.update { it.copy(isLoading = true, error = null) }
 
-        try {
             // 3. Await Network Response
             repository.confirmOtp(currentPhone, currentOtp)
                 .onSuccess {
-                    _effect.send(AuthEffect.NavigateToHome)
+                    if (it.hasSalon) {
+                        _effect.send(AuthEffect.NavigateToDashboard)
+                    } else {
+                        _effect.send(AuthEffect.NavigateToCreateSalon)
+                    }
                 }
                 .onFailure { e ->
                     _state.update {
                         it.copy(
-                            error = AppUiError.FieldError(
-                                AuthErrorTarget.OtpCode,
+                            errors = mapOf(
+                                AuthErrorTarget.OtpCode to
                                 e.toTranslatableText()
                             )
                         )
                     }
+                }.also {
+                    _state.update { it.copy(isLoading = false) }
                 }
-        } finally {
-            // 4. Always runs after the repository call finishes (Success or Failure)
-            _state.update { it.copy(isLoading = false) }
-        }
     }
 
     override fun onCleared() {

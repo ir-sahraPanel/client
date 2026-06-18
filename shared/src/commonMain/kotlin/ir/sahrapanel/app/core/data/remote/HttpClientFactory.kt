@@ -12,14 +12,14 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.AttributeKey
-import ir.sahrapanel.app.core.data.local.secure_storage.UserStorage
+import ir.sahrapanel.app.core.data.local.db.dao.UserTokenDao
 import ir.sahrapanel.app.core.domain.platform.Platform
 import ir.sahrapanel.app.core.domain.platform.PlatformType
 import ir.sahrapanel.app.shared.BuildKonfig
 import kotlinx.serialization.json.Json
 
 fun createKtorClient(
-    userStorage: UserStorage,
+    userTokenDao: UserTokenDao,
     platform: Platform,
     json: Json
 ) = HttpClient {
@@ -46,8 +46,9 @@ fun createKtorClient(
 
     install(HttpCookies)
     expectSuccess = true
+    val baseUrl = BuildKonfig.BASE_URL.trim()
     defaultRequest {
-        val baseUrl = BuildKonfig.BASE_URL.trim()
+
         url(baseUrl)
         contentType(ContentType.Application.Json)
 
@@ -57,5 +58,5 @@ fun createKtorClient(
     }
 
     // فراخوانی اکستنشن جدا شده برای احراز هویت
-    installAuthInterceptor(userStorage, platform)
+    installAuthInterceptor(userTokenDao, platform, baseUrl)
 }

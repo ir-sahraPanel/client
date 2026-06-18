@@ -1,6 +1,6 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -58,6 +58,11 @@ kotlin {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.material3.adaptive)
+            implementation(libs.compose.material3.adaptive.layout)
+            implementation(libs.compose.material3.adaptive.navigation)
+            implementation(libs.compose.material3.adaptive.navigation.suite)
+
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
@@ -73,6 +78,7 @@ kotlin {
             implementation(libs.androidx.room.runtime)
           //koin
             implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
@@ -100,6 +106,15 @@ kotlin {
             implementation(libs.androidx.sqlite.web)
             implementation(npm("@sqlite.org/sqlite-wasm", "3.50.1-build1"))
             implementation(npm("sqlite-wasm-worker", project.file("../sqliteWasmWorker")))
+        }
+    }
+    targets.all {
+        compilations.all {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+                }
+            }
         }
     }
 }

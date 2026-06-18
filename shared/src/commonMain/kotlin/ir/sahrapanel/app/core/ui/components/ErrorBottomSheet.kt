@@ -1,14 +1,12 @@
 package ir.sahrapanel.app.core.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -25,16 +22,46 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ir.sahrapanel.app.core.ui.theme.SahraPanelTheme
+import androidx.window.core.layout.WindowSizeClass
+import ir.sahrapanel.app.core.ui.drawable.CircleXmark
+import ir.sahrapanel.app.core.ui.drawable.SahraPanelDrawable
+import ir.sahrapanel.app.shared.Res
+import ir.sahrapanel.app.shared.something_went_wrong
+import ir.sahrapanel.app.shared.try_again
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ErrorBottomSheet(
+fun ErrorContainer(
     message: String,
     onDismiss: () -> Unit,
-    onRetry: (() -> Unit)? = null // 1. Make it nullable and default to null
+    onRetry: (() -> Unit)? = null,
+    windowSizeClass: WindowSizeClass = rememberWindowSizeClass()
+) {
+    if (windowSizeClass.isMobile) {
+        ErrorModalBottomSheet(
+            message = message,
+            onDismiss = onDismiss,
+            onRetry = onRetry
+        )
+    } else {
+        ErrorAlertDialog(
+            message = message,
+            onDismiss = onDismiss,
+            onRetry = onRetry
+        )
+    }
+}
+
+// ── Mobile: ModalBottomSheet ──────────────────────────────────────────────────
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ErrorModalBottomSheet(
+    message: String,
+    onDismiss: () -> Unit,
+    onRetry: (() -> Unit)?
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -44,70 +71,130 @@ fun ErrorBottomSheet(
         containerColor = MaterialTheme.colorScheme.errorContainer,
         dragHandle = { BottomSheetDefaults.DragHandle() }
     ) {
-        Column(
+        BottomSheetErrorContent(
+            message = message,
+            onDismiss = onDismiss,
+            onRetry = onRetry,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp)
-                .padding(bottom = 36.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+                .padding(bottom = 36.dp)
+        )
+    }
+}
 
+// ── Tablet / Desktop: AlertDialog ─────────────────────────────────────────────
+
+@Composable
+private fun ErrorAlertDialog(
+    message: String,
+    onDismiss: () -> Unit,
+    onRetry: (() -> Unit)?
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.errorContainer,
+        icon = {
+            Icon(
+                SahraPanelDrawable.CircleXmark,
+                contentDescription = stringResource(Res.string.something_went_wrong)
+            )
+        },
+        title = {
             Text(
-                text = "Something went wrong",
+                text = stringResource(Res.string.something_went_wrong),
                 style = MaterialTheme.typography.titleMedium
             )
-
+        },
+        text = {
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = LocalTextStyle.current.color.copy(alpha = 0.8f),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
-
-            // 2. Only show the Spacer and Button if onRetry is provided
+        },
+        confirmButton = {
             if (onRetry != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-
                 Button(
                     onClick = onRetry,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
                         contentColor = MaterialTheme.colorScheme.onError
-                    ),
-                    modifier = Modifier.fillMaxWidth()
+                    )
                 ) {
                     Text("Try again")
                 }
             }
-
+        },
+        dismissButton = {
             TextButton(
                 onClick = onDismiss,
                 colors = ButtonDefaults.textButtonColors(
                     contentColor = MaterialTheme.colorScheme.onErrorContainer
-                ),
-                modifier = Modifier.fillMaxWidth()
+                )
             ) {
                 Text("Dismiss")
             }
         }
-    }
+    )
 }
 
-@Preview(showBackground = true)
+// ── Shared content (used only by the bottom sheet) ───────────────────────────
+
 @Composable
-fun ErrorBottomSheetWithRetryPreview() {
-    SahraPanelTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+private fun BottomSheetErrorContent(
+    message: String,
+    onDismiss: () -> Unit,
+    onRetry: (() -> Unit)?,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Icon(
+            SahraPanelDrawable.CircleXmark,
+            contentDescription = stringResource(Res.string.something_went_wrong)
+        )
+        VSpacer(8.dp)
+        Text(
+            text = stringResource(Res.string.something_went_wrong),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = LocalTextStyle.current.color.copy(alpha = 0.8f),
+            textAlign = TextAlign.Center
+        )
+
+        if (onRetry != null) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(
+                onClick = onRetry,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(Res.string.try_again))
+            }
+        }
+
+        TextButton(
+            onClick = onDismiss,
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            ),
+            modifier = Modifier.fillMaxWidth()
         ) {
-            ErrorBottomSheet(
-                message = "Unable to connect to the server. Please check your internet connection and try again.",
-                onRetry = { /* Do nothing in preview */ },
-                onDismiss = { /* Do nothing in preview */ }
-            )
+            Text("Dismiss")
         }
     }
 }

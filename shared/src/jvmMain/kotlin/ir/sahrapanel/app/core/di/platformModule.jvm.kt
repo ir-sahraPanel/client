@@ -4,12 +4,14 @@ import ir.sahrapanel.app.core.domain.platform.Platform
 import ir.sahrapanel.app.core.domain.platform.PlatformType
 import ir.sahrapanel.app.shared.BuildKonfig
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create
 
 actual val platformModule: Module
     get() = module {
-        single<Platform> { create(::JVMPlatform) }
+        singleOf(::JVMPlatform) bind  Platform::class
     }
 
 

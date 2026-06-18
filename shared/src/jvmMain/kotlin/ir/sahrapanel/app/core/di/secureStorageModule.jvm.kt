@@ -10,6 +10,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.security.KeyStore
+import java.security.MessageDigest
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
@@ -60,13 +61,18 @@ private class DesktopKeyStoreStorage : SecureStorage {
     }
 
     override suspend fun saveString(key: SecureStorageKey, value: String) {
-        val secretKey: SecretKey = SecretKeySpec(value.toByteArray(Charsets.UTF_8), "RAW")
+        // تبدیل رشته به یک هَش ۲۵۶ بیتی (۳۲ بایت) تا الگوریتم AES آن را به عنوان کلید قبول کند
+        val sha256 = MessageDigest.getInstance("SHA-256")
+        val keyBytes = sha256.digest(value.toByteArray(Charsets.UTF_8))
+
+        // استفاده از AES به جای RAW
+        val secretKey: SecretKey = SecretKeySpec(keyBytes, "AES")
         val entry = KeyStore.SecretKeyEntry(secretKey)
 
+        // ذخیره‌سازی با پارامتر حفاظتی (protectionParameter) که از قبل تعریف کرده‌اید
         keyStore.setEntry(key.key, entry, protectionParameter)
         saveKeyStore()
     }
-
     override suspend fun getString(key: SecureStorageKey): String? {
         if (!keyStore.containsAlias(key.key)) return null
 

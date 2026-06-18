@@ -1,5 +1,6 @@
 package ir.sahrapanel.app.features.auth.presentation
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -30,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
@@ -37,6 +40,9 @@ import androidx.navigation3.runtime.NavKey
 import ir.sahrapanel.app.core.errorMessageFor
 import ir.sahrapanel.app.core.hasErrorFor
 import ir.sahrapanel.app.core.ui.components.VSpacer
+import ir.sahrapanel.app.core.ui.drawable.SahraPanelDrawable
+import ir.sahrapanel.app.core.ui.drawable.logoPlaceHolder
+import ir.sahrapanel.app.core.ui.theme.SahraPanelTheme
 import ir.sahrapanel.app.shared.Res
 import ir.sahrapanel.app.shared.enter_phone_number
 import ir.sahrapanel.app.shared.login
@@ -48,7 +54,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Serializable
-class AuthEnterPhoneNumberRoute : NavKey
+data object AuthEnterPhoneNumberRoute : NavKey
 
 fun EntryProviderScope<NavKey>.authPhoneNumberEntry(navigateToOtpConfirm: () -> Unit) {
     entry<AuthEnterPhoneNumberRoute> {
@@ -70,7 +76,7 @@ fun EntryProviderScope<NavKey>.authPhoneNumberEntry(navigateToOtpConfirm: () -> 
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AuthEnterPhoneNumberScreen(
     state: AuthUiState, onEvent: (AuthEvent) -> Unit
@@ -90,7 +96,6 @@ fun AuthEnterPhoneNumberScreen(
     // 3. Pass the custom directive to the navigator
     val navigator = rememberSupportingPaneScaffoldNavigator(
         scaffoldDirective = customDirective,
-
 
         )
 
@@ -115,6 +120,10 @@ fun AuthEnterPhoneNumberScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
+                            Image(
+                                SahraPanelDrawable.logoPlaceHolder,
+                                contentDescription = ""
+                            )
                             VSpacer(42.dp)
                             Text(
                                 stringResource(Res.string.welcome),
@@ -131,17 +140,17 @@ fun AuthEnterPhoneNumberScreen(
                                 value = state.phoneNumber,
                                 onValueChange = {
                                     onEvent(AuthEvent.PhoneChanged(it))
-                                    onEvent(AuthEvent.ClearError)
                                 },
                                 maxLines = 1,
 
                                 label = { Text(stringResource(Res.string.phone_number)) },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                                 modifier = Modifier.fillMaxWidth(0.7f),
-                                isError = state.error.hasErrorFor(AuthErrorTarget.PhoneNumber),
+                                isError = state.errors.hasErrorFor(AuthErrorTarget.PhoneNumber),
                                 enabled = !state.isLoading,
                                 supportingText = {
-                                    Text(state.error.errorMessageFor(AuthErrorTarget.PhoneNumber))
+                                    state.errors.errorMessageFor(AuthErrorTarget.PhoneNumber)
+                                        ?.let { Text(it) }
                                 }
                             )
                             VSpacer(32.dp)
@@ -153,6 +162,12 @@ fun AuthEnterPhoneNumberScreen(
                                 if (state.isLoading) LoadingIndicator()
                                 else Text(stringResource(Res.string.request_otp))
                             }
+                            VSpacer(8.dp)
+                            Text(
+                                "ورود شما به معنای پذیرش [قوانین] و [سیاست حریم خصوصی] است.",
+                                modifier = Modifier.fillMaxWidth(0.7f),
+                            )
+
                         }
                     }
                 }
@@ -162,5 +177,13 @@ fun AuthEnterPhoneNumberScreen(
                     OtpSupportingContent()
                 }
             })
+    }
+}
+
+@Composable
+@Preview
+private fun AuthEnterPhoneNumberScreenPreview() {
+    SahraPanelTheme {
+        AuthEnterPhoneNumberScreen(AuthUiState(), {})
     }
 }

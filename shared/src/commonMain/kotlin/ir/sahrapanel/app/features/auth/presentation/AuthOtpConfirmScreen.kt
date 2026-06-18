@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
@@ -36,6 +37,7 @@ import ir.sahrapanel.app.core.errorMessageFor
 import ir.sahrapanel.app.core.hasErrorFor
 import ir.sahrapanel.app.core.ui.components.HFillSpacer
 import ir.sahrapanel.app.core.ui.components.VSpacer
+import ir.sahrapanel.app.core.ui.theme.SahraPanelTheme
 import ir.sahrapanel.app.shared.Res
 import ir.sahrapanel.app.shared.change_phone_number
 import ir.sahrapanel.app.shared.did_not_receive_code
@@ -53,8 +55,9 @@ data object AuthOtpConfirmRoute : NavKey {
 }
 
 fun EntryProviderScope<NavKey>.authOtpConfirmEntry(
-    onNavigateToHome: () -> Unit,
-    onNavigateToPhoneEntry: () -> Unit
+    onNavigateToDashboard: () -> Unit,
+    onNavigateToPhoneEntry: () -> Unit,
+    onNavigateToCreateSalon: () -> Unit
 ) {
     entry<AuthOtpConfirmRoute> {
         val viewModel = koinViewModel<AuthViewModel>()
@@ -67,11 +70,11 @@ fun EntryProviderScope<NavKey>.authOtpConfirmEntry(
             viewModel.onEvent(AuthEvent.StartResendTimer)
             viewModel.effect.collect {
                 when (it) {
-                    AuthEffect.NavigateToHome -> onNavigateToHome()
+                    AuthEffect.NavigateToDashboard -> onNavigateToDashboard()
                     AuthEffect.NavigateToPhoneEntry -> onNavigateToPhoneEntry()
+                    AuthEffect.NavigateToCreateSalon -> onNavigateToCreateSalon()
                     else -> return@collect
                 }
-
             }
         }
     }
@@ -147,15 +150,14 @@ private fun OtpMainContent(state: AuthUiState, onEvent: (AuthEvent) -> Unit) {
                     value = state.enteredOtpCode,
                     onValueChange = {
                         onEvent(AuthEvent.OtpChanged(it))
-                        onEvent(AuthEvent.ClearError)
                     },
                     label = { Text(stringResource(Res.string.verification_code)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !state.isLoading,
-                    isError = state.error.hasErrorFor(AuthErrorTarget.OtpCode),
+                    isError = state.errors.hasErrorFor(AuthErrorTarget.OtpCode),
                     supportingText = {
-                        Text(state.error.errorMessageFor(AuthErrorTarget.OtpCode))
+                        state.errors.errorMessageFor(AuthErrorTarget.OtpCode)?.let { Text(it) }
                     }
                 )
                 VSpacer(16.dp)
@@ -222,5 +224,14 @@ fun ResendCodeSection(
         }
 
 
+    }
+}
+
+
+@Composable
+@Preview
+private fun AuthOtpConfirmScreenPreview() {
+    SahraPanelTheme {
+        AuthOtpConfirmScreen(AuthUiState(), {})
     }
 }

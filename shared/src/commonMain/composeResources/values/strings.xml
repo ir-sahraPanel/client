@@ -2,6 +2,7 @@
 <resources>
 
         <string name="error_unknown">خطایی رخ داده است. لطفاً دوباره تلاش کنید.</string>
+        <string name="something_went_wrong">مشکلی پیش آمده است</string>
         <string name="error_no_internet">اتصال به اینترنت برقرار نیست. شبکه خود را بررسی کنید.</string>
         <string name="error_timeout">پاسخی از سرور دریافت نشد. لطفاً دوباره تلاش کنید.</string>
         <string name="error_invalid_phone">فرمت شماره تلفن وارد شده معتبر نیست.</string>
@@ -21,4 +22,25 @@
         <string name="change_phone_number">تغییر شماره تلفن</string>
         <string name="did_not_receive_code">کد را دریافت نکردید؟</string>
         <string name="timer_text">%1$s تا ارسال مجدد کد</string>
+
+        <string name="validation_empty_salon_name">نام سالن نمی‌تواند خالی باشد</string>
+        <string name="validation_empty_province">لطفاً استان را انتخاب کنید</string>
+        <string name="validation_empty_city">لطفاً شهر را انتخاب کنید</string>
+        <string name="validation_empty_owner_fname">نام دارنده نمی‌تواند خالی باشد</string>
+        <string name="validation_empty_owner_lname">نام خانوادگی دارنده نمی‌تواند خالی باشد</string>
+        <string name="ok">تایید</string>
+        <string name="create_new_salon">ایجاد سالن جدید</string>
+        <string name="operation_successful">عملیات با موفقیت انجام شد!</string>
+        <string name="salon_name">نام سالن</string>
+        <string name="salon_info">اطلاعات سالن</string>
+        <string name="new_salon_desc">اطلاعات سالن خود را وارد کنید تا در چند قدم ساده، ویترین کسب‌وکار شما آماده شود.</string>
+        <string name="salon_owner_info">اطلاعات مدیر سالن</string>
+        <string name="address">ادرس</string>
+        <string name="first_name">نام</string>
+        <string name="last_name">نام خانوادگی</string>
+        <string name="submit">ثبت</string>
+        <string name="try_again">تلاش مجدد</string>
+
+
+
 </resources>

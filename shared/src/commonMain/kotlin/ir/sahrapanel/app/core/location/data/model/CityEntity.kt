@@ -1,4 +1,4 @@
-package ir.sahrapanel.app.core.data.local.db.entity
+package ir.sahrapanel.app.core.location.data.model
 
 import androidx.room3.ColumnInfo
 import androidx.room3.Entity

@@ -1,66 +1,75 @@
 package ir.sahrapanel.app.core.data.local.db.converters
 
 
-import androidx.room3.TypeConverter
+import androidx.room3.ColumnTypeConverter
+import androidx.room3.ProvidedColumnTypeConverter
 import ir.sahrapanel.app.core.domain.Gender
 import ir.sahrapanel.app.core.domain.UserRole
+import ir.sahrapanel.app.features.salon.data.SalonMembershipDto
 import kotlin.time.Instant
+import org.koin.core.component.inject
 
 
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.json.Json
+import org.koin.compose.koinInject
+import org.koin.core.component.KoinComponent
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
-class RoomConverters {
 
-    // --- For Instant (Recommended for precise timestamps) ---
-    @TypeConverter
+    object RoomConverters: KoinComponent {
+        private val json: Json by inject<Json>()
+    @ColumnTypeConverter
     fun fromTimestamp(value: Long?): Instant? {
         return value?.let { Instant.fromEpochMilliseconds(it) }
     }
 
-    @TypeConverter
+    @ColumnTypeConverter
     fun instantToTimestamp(instant: Instant?): Long? {
         return instant?.toEpochMilliseconds()
     }
 
     // --- For LocalDateTime (If you want to save it as an ISO-8601 String) ---
-    @TypeConverter
+    @ColumnTypeConverter
     fun fromIsoString(value: String?): LocalDateTime? {
         return value?.let { LocalDateTime.parse(it) }
     }
 
-    @TypeConverter
+    @ColumnTypeConverter
     fun localDateTimeToString(dateTime: LocalDateTime?): String? {
         return dateTime?.toString() // Saves as YYYY-MM-DDTHH:MM:SS
     }
 
 
-    @TypeConverter
+    @OptIn(ExperimentalUuidApi::class)
+    @ColumnTypeConverter
     fun fromKotlinUuid(uuid: Uuid?): String? {
         return uuid?.toString()
     }
 
-    @TypeConverter
+    @OptIn(ExperimentalUuidApi::class)
+    @ColumnTypeConverter
     fun toKotlinUuid(value: String?): Uuid? {
         return value?.let { Uuid.parse(it) }
     }
 
-    @TypeConverter
-    fun fromUserRole(role: UserRole): String = role.name
-
-    @TypeConverter
-    fun toUserRole(value: String): UserRole = try {
-        UserRole.valueOf(value)
-    } catch (e: Exception) {
-        UserRole.UNKNOWN
+    @ColumnTypeConverter
+    fun fromRoleList(roles: List<UserRole>): String {
+        return roles.joinToString(",") { it.name }
     }
 
-    @TypeConverter
+    @ColumnTypeConverter
+    fun toRoleList(data: String): List<UserRole> {
+        if (data.isEmpty()) return emptyList()
+        return data.split(",").map { UserRole.valueOf(it) }
+    }
+
+
+    @ColumnTypeConverter
     fun fromGender(gender: Gender): String = gender.name
 
-    @TypeConverter
+    @ColumnTypeConverter
     fun toGender(value: String): Gender = try {
         Gender.valueOf(value.uppercase())
     } catch (e: Exception) {

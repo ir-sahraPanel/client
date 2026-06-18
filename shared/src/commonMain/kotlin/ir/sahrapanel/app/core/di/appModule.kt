@@ -1,14 +1,12 @@
 package ir.sahrapanel.app.core.di
 
-import ir.sahrapanel.app.core.data.local.secure_storage.UserStorage
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
-import org.koin.plugin.module.dsl.create
-import org.koin.plugin.module.dsl.single
+
 
 val appModule = module {
-    single<Json>() { create(::appJson) }
-    single<UserStorage>()
+    single<Json>() { appJson()}
+    //    single<UserStorage>()
 }
 
 private fun appJson() : Json = Json {

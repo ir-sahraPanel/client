@@ -10,6 +10,10 @@ import ir.sahrapanel.app.features.auth.presentation.AuthEnterPhoneNumberRoute
 import ir.sahrapanel.app.features.auth.presentation.AuthOtpConfirmRoute
 import ir.sahrapanel.app.features.auth.presentation.authOtpConfirmEntry
 import ir.sahrapanel.app.features.auth.presentation.authPhoneNumberEntry
+import ir.sahrapanel.app.features.dashboard.DashboardRoute
+import ir.sahrapanel.app.features.dashboard.dashboardEntry
+import ir.sahrapanel.app.features.salon.presentation.create.CreateSalonRoute
+import ir.sahrapanel.app.features.salon.presentation.create.createSalonEntry
 import ir.sahrapanel.app.features.splash.SplashRoute
 import ir.sahrapanel.app.features.splash.splashEntry
 
@@ -25,17 +29,20 @@ fun AppRoutes(){
         backStack =backStack,
         entryProvider = entryProvider {
             splashEntry(
-                navigateToAuth = {backStack.add(AuthEnterPhoneNumberRoute())},
-                navigateToHome = {}
+                navigateToAuth = { backStack.add(AuthEnterPhoneNumberRoute) },
+                navigateToDashboard = { backStack.add(DashboardRoute) },
+                navigateToCreateSalon = {backStack.add(CreateSalonRoute)}
             )
             authPhoneNumberEntry(
                 navigateToOtpConfirm = {  backStack.add(AuthOtpConfirmRoute) }
             )
             authOtpConfirmEntry(
-                onNavigateToHome = {},
-                onNavigateToPhoneEntry = {backStack.add(AuthEnterPhoneNumberRoute())}
+                onNavigateToDashboard = {backStack.add(DashboardRoute)},
+                onNavigateToPhoneEntry = { backStack.add(AuthEnterPhoneNumberRoute) },
+                onNavigateToCreateSalon = { backStack.add(CreateSalonRoute) }
             )
-
+            createSalonEntry(onNavToDashboardScreen = {backStack.add(DashboardRoute)})
+            dashboardEntry()
         }
 
     )
@@ -48,6 +55,8 @@ private val routesConfigure = SavedStateConfiguration {
             subclass(SplashRoute::class, SplashRoute.serializer())
             subclass(AuthEnterPhoneNumberRoute::class, AuthEnterPhoneNumberRoute.serializer())
             subclass(AuthOtpConfirmRoute::class, AuthOtpConfirmRoute.serializer())
+            subclass(CreateSalonRoute::class, CreateSalonRoute.serializer())
+            subclass(DashboardRoute::class, DashboardRoute.serializer())
         }
     }
 }

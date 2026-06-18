@@ -2,13 +2,20 @@ package ir.sahrapanel.app.features.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ir.sahrapanel.app.core.data.local.secure_storage.UserStorage
+import ir.sahrapanel.app.core.data.local.db.dao.SalonDao
+import ir.sahrapanel.app.features.auth.domain.repository.AuthRepository
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlin.uuid.Uuid
 
-class SplashViewModel(private val userStorage: UserStorage) : ViewModel() {
+class SplashViewModel(
+    private val authRepository: AuthRepository,
+    private val salonDao: SalonDao
+) : ViewModel() {
+
     companion object{
       const val SPLASH_DELAY = 1000L
     }
@@ -22,13 +29,21 @@ class SplashViewModel(private val userStorage: UserStorage) : ViewModel() {
 
 
     private fun checkUserIsLogin() = viewModelScope.launch {
-        delay(SPLASH_DELAY)
-        if (userStorage.isLoggedIn()) {
-            _effect.send(SplashEffect.NavigateToHome)
-        } else {
+        if (!authRepository.isLoggedIn()) {
             _effect.send(SplashEffect.NavigateToAuth)
+            return@launch
         }
 
+        // Only query the DB if the user is actually logged in
+        val userHasSalon = salonDao.observeActiveSalons().firstOrNull()
+
+        val effect = if (userHasSalon != null) {
+            SplashEffect.NavigateToDashboard
+        } else {
+            SplashEffect.NavigateToCreateSalon
+        }
+
+        _effect.send(effect)
     }
 
 }

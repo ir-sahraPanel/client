@@ -9,6 +9,7 @@ import io.ktor.http.contentType
 import ir.sahrapanel.app.core.data.remote.safeApiCall
 import ir.sahrapanel.app.features.auth.data.dto.AuthGenerateOtpRequest
 import ir.sahrapanel.app.features.auth.data.dto.AuthOtpConfirmRequest
+import ir.sahrapanel.app.features.auth.data.dto.ConfirmOtpResponse
 import ir.sahrapanel.app.features.auth.data.dto.RefreshTokenRequest
 import ir.sahrapanel.app.features.auth.data.dto.UserTokenDto
 
@@ -20,7 +21,7 @@ class AuthRemoteDataSource(private val client: HttpClient) {
         }.body()
     }
 
-    suspend fun confirmOtp(phoneNumber: String, code: String): Result<UserTokenDto> = safeApiCall {
+    suspend fun confirmOtp(phoneNumber: String, code: String): Result<ConfirmOtpResponse> = safeApiCall {
         client.post("auth/otp/confirm") {
             contentType(ContentType.Application.Json)
             setBody(AuthOtpConfirmRequest(phoneNumber, code))
