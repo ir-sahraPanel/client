@@ -8,8 +8,8 @@ import org.koin.dsl.module
 
 val featuresModule = module{
     includes(
-        splashModule,
         authModule,
+        splashModule,
         locationModule,
         salonModule
 

@@ -1,21 +1,16 @@
 package ir.sahrapanel.app.core.di
 
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import ir.sahrapanel.app.core.domain.platform.Platform
 import ir.sahrapanel.app.core.domain.platform.PlatformType
 import ir.sahrapanel.app.shared.BuildKonfig
-import org.koin.core.context.GlobalContext
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create
 
 actual val platformModule: Module
     get() = module {
-       singleOf(::AndroidPlatform) bind Platform::class
+        single<Platform> { create<Platform>(::AndroidPlatform) }
     }
 
 private class AndroidPlatform() : Platform {

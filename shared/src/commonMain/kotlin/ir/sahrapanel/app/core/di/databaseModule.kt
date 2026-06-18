@@ -11,27 +11,21 @@ import ir.sahrapanel.app.core.data.local.db.roomDriver
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.create
+
+fun provideAppDatabase(): AppDatabase =
+    databaseBuilder.addMigrations(*appDatabaseMigrations).setDriver(roomDriver)
+        .setQueryCoroutineContext(Dispatchers.Default).build()
+
+fun provideLocationDao(db: AppDatabase): LocationDao = db.locationDao()
+fun provideSalonDao(db: AppDatabase): SalonDao = db.salonDao()
+fun provideUserTokenDao(db: AppDatabase): UserTokenDao = db.userTokenDao()
+fun provideSalonMembershipDao(db: AppDatabase): SalonMembershipDao = db.salonMembershipDao()
 
 val databaseModule: Module = module {
-    single<AppDatabase>() {
-        databaseBuilder
-            .addMigrations(*appDatabaseMigrations)
-            .setDriver(roomDriver)
-            .setQueryCoroutineContext(Dispatchers.Default)
-            .build()
-
-    }
-
-    single<LocationDao>() {
-        get<AppDatabase>().locationDao()
-    }
-    single<SalonDao> { get<AppDatabase>().salonDao() }
-    single<UserTokenDao>() {
-        get<AppDatabase>().userTokenDao()
-
-    }
-    single<SalonMembershipDao>() {
-        get<AppDatabase>().salonMembershipDao()
-
-    }
+    single { create(::provideAppDatabase) }
+    single { create(::provideLocationDao) }
+    single { create(::provideSalonDao) }
+    single { create(::provideUserTokenDao) }
+    single { create(::provideSalonMembershipDao) }
 }

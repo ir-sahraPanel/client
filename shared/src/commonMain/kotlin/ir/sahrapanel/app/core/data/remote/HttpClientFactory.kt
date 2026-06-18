@@ -22,7 +22,7 @@ fun createKtorClient(
     userTokenDao: UserTokenDao,
     platform: Platform,
     json: Json
-) = HttpClient {
+) : HttpClient = HttpClient {
     install(ContentNegotiation) {
         json(json)
     }

@@ -13,7 +13,7 @@ import org.koin.plugin.module.dsl.single
 import org.koin.plugin.module.dsl.viewModel
 
 val salonModule = module {
-    singleOf(::SalonDataSource)
-    singleOf(::SalonRepositoryImpl)  bind  SalonRepository::class
-    viewModelOf(::CreateSalonViewModel)
+    single<SalonDataSource>()
+    single<SalonRepository>{create(::SalonRepositoryImpl)}
+    viewModel<CreateSalonViewModel>()
 }
