@@ -7,10 +7,11 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.create
 
 actual val platformModule: Module
     get() = module {
-        singleOf(::WasmPlatform) bind Platform::class
+        single<Platform> { create<Platform>(::WasmPlatform) }
     }
 
 private class WasmPlatform: Platform {

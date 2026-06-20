@@ -1,8 +1,8 @@
 package ir.sahrapanel.app.features.auth.data.dto
 
 import ir.sahrapanel.app.features.auth.domain.model.AuthSession
-import ir.sahrapanel.app.features.salon.data.SalonDto
-import ir.sahrapanel.app.features.salon.data.SalonMembershipDto
+import ir.sahrapanel.app.core.data.model.SalonDto
+import ir.sahrapanel.app.core.data.model.SalonMembershipDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -4,6 +4,6 @@ enum class UserRole {
     OWNER,
     ADMIN,
     SECRETARY,
-    EMPLOYEE,
+    ARTIST,
     UNKNOWN
 }

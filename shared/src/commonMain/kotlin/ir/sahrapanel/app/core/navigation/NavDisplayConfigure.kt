@@ -12,8 +12,7 @@ import ir.sahrapanel.app.features.auth.presentation.authOtpConfirmEntry
 import ir.sahrapanel.app.features.auth.presentation.authPhoneNumberEntry
 import ir.sahrapanel.app.features.dashboard.DashboardRoute
 import ir.sahrapanel.app.features.dashboard.dashboardEntry
-import ir.sahrapanel.app.features.salon.presentation.create.CreateSalonRoute
-import ir.sahrapanel.app.features.salon.presentation.create.createSalonEntry
+import ir.sahrapanel.app.features.create_salon.presentation.CreateSalonRoute
 import ir.sahrapanel.app.features.splash.SplashRoute
 import ir.sahrapanel.app.features.splash.splashEntry
 

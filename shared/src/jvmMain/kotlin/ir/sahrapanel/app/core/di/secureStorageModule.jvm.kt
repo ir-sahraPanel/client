@@ -1,7 +1,7 @@
 package ir.sahrapanel.app.core.di
 
-import ir.sahrapanel.app.core.data.local.secure_storage.SecureStorage
-import ir.sahrapanel.app.core.data.local.secure_storage.SecureStorageKey
+import ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorage
+import ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey
 import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create
@@ -16,10 +16,11 @@ import javax.crypto.spec.SecretKeySpec
 
 actual val secureStorageModule: Module
     get() = module {
-        single<SecureStorage> { create(::DesktopKeyStoreStorage) }
+        single<ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorage> { create(::DesktopKeyStoreStorage) }
     }
 
-private class DesktopKeyStoreStorage : SecureStorage {
+private class DesktopKeyStoreStorage :
+    ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorage {
 
     // PKCS12 is the standard, secure storage format for Java applications
     private val keyStore: KeyStore = KeyStore.getInstance("PKCS12")
@@ -60,7 +61,7 @@ private class DesktopKeyStoreStorage : SecureStorage {
         }
     }
 
-    override suspend fun saveString(key: SecureStorageKey, value: String) {
+    override suspend fun saveString(key: ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey, value: String) {
         // تبدیل رشته به یک هَش ۲۵۶ بیتی (۳۲ بایت) تا الگوریتم AES آن را به عنوان کلید قبول کند
         val sha256 = MessageDigest.getInstance("SHA-256")
         val keyBytes = sha256.digest(value.toByteArray(Charsets.UTF_8))
@@ -73,7 +74,7 @@ private class DesktopKeyStoreStorage : SecureStorage {
         keyStore.setEntry(key.key, entry, protectionParameter)
         saveKeyStore()
     }
-    override suspend fun getString(key: SecureStorageKey): String? {
+    override suspend fun getString(key: ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey): String? {
         if (!keyStore.containsAlias(key.key)) return null
 
         val entry = keyStore.getEntry(key.key, protectionParameter) as? KeyStore.SecretKeyEntry
@@ -82,7 +83,7 @@ private class DesktopKeyStoreStorage : SecureStorage {
         return String(secretKey.encoded, Charsets.UTF_8)
     }
 
-    override suspend fun delete(key: SecureStorageKey) {
+    override suspend fun delete(key: ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey) {
         if (keyStore.containsAlias(key.key)) {
             keyStore.deleteEntry(key.key)
             saveKeyStore()

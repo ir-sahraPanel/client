@@ -16,9 +16,9 @@ actual val roomDriver: SQLiteDriver
 private external fun createSQLiteWorker(): Worker
 
 
-actual val databaseBuilder: RoomDatabase.Builder<AppDatabase>
+actual val databaseBuilder: RoomDatabase.Builder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>
     get() {
-        return Room.databaseBuilder<AppDatabase>(name = "sahra_panel.db")
+        return Room.databaseBuilder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>(name = "sahra_panel.db")
     }
 
 actual suspend fun SQLiteConnection.runSql(string: String) {

@@ -1,7 +1,7 @@
 package ir.sahrapanel.app.core.location
 
-import ir.sahrapanel.app.core.location.data.LocationDataSource
-import ir.sahrapanel.app.core.location.data.LocationRepositoryImpl
+import ir.sahrapanel.app.core.data.data_source.remote.LocationDataSource
+import ir.sahrapanel.app.core.data.repository.LocationRepositoryImpl
 import ir.sahrapanel.app.core.location.domain.LocationRepository
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.create

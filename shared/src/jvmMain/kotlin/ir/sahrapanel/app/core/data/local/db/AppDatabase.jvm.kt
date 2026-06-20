@@ -11,10 +11,10 @@ import java.io.File
 actual val roomDriver: SQLiteDriver
     get() = BundledSQLiteDriver()
 
-actual val databaseBuilder: RoomDatabase.Builder<AppDatabase>
+actual val databaseBuilder: RoomDatabase.Builder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>
     get() {
     val dbFile = File(System.getProperty("java.io.tmpdir"), "sahra_panel.db") //todo not in tmp
-    return Room.databaseBuilder<AppDatabase>(
+    return Room.databaseBuilder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>(
         name = dbFile.absolutePath,
     )
 }

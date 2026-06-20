@@ -1,11 +1,9 @@
 package ir.sahrapanel.app.features.auth.data.dto
 
-import ir.sahrapanel.app.core.data.local.db.entity.UserTokenEntity
 import ir.sahrapanel.app.core.util.toUtcInstant
 import ir.sahrapanel.app.features.auth.domain.model.AuthToken
 import ir.sahrapanel.app.features.auth.domain.model.User
 import ir.sahrapanel.app.features.auth.domain.model.UserToken
-import ir.sahrapanel.app.features.salon.data.SalonMembershipDto
 import kotlinx.serialization.Serializable
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -34,7 +32,8 @@ fun UserTokenDto.toDomain() = UserToken(
     ),
 )
 @OptIn(ExperimentalUuidApi::class)
-fun UserTokenDto.toEntity() = UserTokenEntity(
+fun UserTokenDto.toEntity() =
+    _root_ide_package_.ir.sahrapanel.app.core.data.data_source.local.db.entity.UserTokenEntity(
         id = Uuid.parse(user.id),
         phoneNumber = user.phoneNumber,
         firstName = user.firstName,
@@ -45,4 +44,4 @@ fun UserTokenDto.toEntity() = UserTokenEntity(
         accessTokenExpire = token.accessTokenExpire.toUtcInstant(),
         refreshTokenExpire = token.refreshTokenExpire.toUtcInstant()
 
-)
+    )

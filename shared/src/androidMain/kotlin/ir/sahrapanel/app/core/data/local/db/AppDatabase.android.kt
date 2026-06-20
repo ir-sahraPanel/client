@@ -13,11 +13,11 @@ import org.koin.mp.KoinPlatformTools
 actual val roomDriver: SQLiteDriver
   get() = BundledSQLiteDriver()
 
-actual val databaseBuilder: RoomDatabase.Builder<AppDatabase>
+actual val databaseBuilder: RoomDatabase.Builder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>
   get() {
   val context: Context = KoinPlatformTools.defaultContext().get().get()
   val dbFile = context.getDatabasePath("sahra_panel.db")
-  return Room.databaseBuilder<AppDatabase>(
+  return Room.databaseBuilder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>(
     context = context,
     name = dbFile.absolutePath
   )

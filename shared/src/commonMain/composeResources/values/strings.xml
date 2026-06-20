@@ -41,6 +41,11 @@
         <string name="submit">ثبت</string>
         <string name="try_again">تلاش مجدد</string>
 
-
+        <string name="nav_owner_dash">مدیریت مالک</string> <!-- Owner Management / View -->
+        <string name="nav_admin_dash">مدیریت سیستم</string> <!-- Admin Management / View -->
+        <string name="nav_sec_dash">پنل منشی</string> <!-- Secretary Panel -->
+        <string name="nav_artist_dash">پنل آرتیست</string> <!-- Employee Panel -->
+        <string name="nav_settings">تنظیمات</string>
+        <string name="nav_profile">پروفایل</string>
 
 </resources>
