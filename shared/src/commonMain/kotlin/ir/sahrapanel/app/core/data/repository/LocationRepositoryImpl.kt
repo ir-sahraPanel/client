@@ -1,7 +1,7 @@
 package ir.sahrapanel.app.core.data.repository
 
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.LocationDao
-import ir.sahrapanel.app.core.data.data_source.remote.LocationDataSource
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.LocationDao
+import ir.sahrapanel.app.core.data.dataSource.remote.LocationDataSource
 import ir.sahrapanel.app.core.data.model.toDomain
 import ir.sahrapanel.app.core.data.model.toEntity
 import ir.sahrapanel.app.core.domain.model.City

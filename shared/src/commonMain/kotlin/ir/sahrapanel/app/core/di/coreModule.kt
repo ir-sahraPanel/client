@@ -1,7 +1,7 @@
 package ir.sahrapanel.app.core.di
 
-import ir.sahrapanel.app.core.data.data_source.remote.LocationDataSource
-import ir.sahrapanel.app.core.data.data_source.remote.SalonDataSource
+import ir.sahrapanel.app.core.data.dataSource.remote.LocationDataSource
+import ir.sahrapanel.app.core.data.dataSource.remote.SalonDataSource
 import ir.sahrapanel.app.core.data.repository.LocationRepositoryImpl
 import ir.sahrapanel.app.core.data.repository.SalonRepositoryImpl
 import ir.sahrapanel.app.core.domain.model.LocationRepository

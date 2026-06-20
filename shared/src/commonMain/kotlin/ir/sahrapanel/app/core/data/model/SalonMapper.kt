@@ -2,7 +2,7 @@
 
 package ir.sahrapanel.app.core.data.model
 
-import ir.sahrapanel.app.core.data.data_source.local.db.entity.SalonEntity
+import ir.sahrapanel.app.core.data.dataSource.local.db.entity.SalonEntity
 import ir.sahrapanel.app.core.domain.model.Salon
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi

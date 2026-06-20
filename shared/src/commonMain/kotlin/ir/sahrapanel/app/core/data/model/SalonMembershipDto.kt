@@ -2,7 +2,7 @@
 
 package ir.sahrapanel.app.core.data.model
 
-import ir.sahrapanel.app.core.data.data_source.local.db.entity.SalonMembershipEntity
+import ir.sahrapanel.app.core.data.dataSource.local.db.entity.SalonMembershipEntity
 import ir.sahrapanel.app.core.domain.UserRole
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

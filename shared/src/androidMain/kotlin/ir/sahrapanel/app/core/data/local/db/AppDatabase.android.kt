@@ -6,18 +6,17 @@ import androidx.room3.RoomDatabase
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.SQLiteDriver
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import kotlinx.coroutines.Dispatchers
 import org.koin.mp.KoinPlatformTools
 
 
 actual val roomDriver: SQLiteDriver
   get() = BundledSQLiteDriver()
 
-actual val databaseBuilder: RoomDatabase.Builder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>
+actual val databaseBuilder: RoomDatabase.Builder<ir.sahrapanel.app.core.data.dataSource.local.db.AppDatabase>
   get() {
   val context: Context = KoinPlatformTools.defaultContext().get().get()
   val dbFile = context.getDatabasePath("sahra_panel.db")
-  return Room.databaseBuilder<ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase>(
+  return Room.databaseBuilder<ir.sahrapanel.app.core.data.dataSource.local.db.AppDatabase>(
     context = context,
     name = dbFile.absolutePath
   )

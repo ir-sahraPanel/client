@@ -3,10 +3,10 @@
 package ir.sahrapanel.app.features.auth.data.repository
 
 import androidx.room3.useWriterConnection
-import ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonDao
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonMembershipDao
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.UserTokenDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.AppDatabase
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.SalonDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.SalonMembershipDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.UserTokenDao
 import ir.sahrapanel.app.features.auth.data.AuthRemoteDataSource
 import ir.sahrapanel.app.features.auth.data.dto.ConfirmOtpResponse
 import ir.sahrapanel.app.features.auth.data.dto.UserTokenDto

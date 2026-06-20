@@ -2,7 +2,7 @@ package ir.sahrapanel.app.features.auth.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ir.sahrapanel.app.core.data.data_source.remote.network.toTranslatableText
+import ir.sahrapanel.app.core.data.dataSource.remote.network.toTranslatableText
 import ir.sahrapanel.app.core.domain.isPhoneNumber
 import ir.sahrapanel.app.core.ui.components.TranslatableText
 import ir.sahrapanel.app.features.auth.domain.repository.AuthRepository

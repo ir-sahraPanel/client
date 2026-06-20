@@ -2,9 +2,9 @@
 
 package ir.sahrapanel.app.core.data.repository
 
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonDao
-import ir.sahrapanel.app.core.data.data_source.local.db.entity.SalonEntity
-import ir.sahrapanel.app.core.data.data_source.remote.SalonDataSource
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.SalonDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.entity.SalonEntity
+import ir.sahrapanel.app.core.data.dataSource.remote.SalonDataSource
 import ir.sahrapanel.app.core.data.model.toDomain
 import ir.sahrapanel.app.features.create_salon.data.CreateSalonRequest
 import ir.sahrapanel.app.core.domain.model.Salon

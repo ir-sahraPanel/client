@@ -6,7 +6,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import ir.sahrapanel.app.core.data.data_source.remote.network.safeApiCall
+import ir.sahrapanel.app.core.data.dataSource.remote.network.safeApiCall
 import ir.sahrapanel.app.features.auth.data.dto.AuthGenerateOtpRequest
 import ir.sahrapanel.app.features.auth.data.dto.AuthOtpConfirmRequest
 import ir.sahrapanel.app.features.auth.data.dto.ConfirmOtpResponse

@@ -1,13 +1,13 @@
 package ir.sahrapanel.app.core.di
 
-import ir.sahrapanel.app.core.data.data_source.local.db.AppDatabase
-import ir.sahrapanel.app.core.data.data_source.local.db.appDatabaseMigrations
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.LocationDao
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonDao
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonMembershipDao
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.UserTokenDao
-import ir.sahrapanel.app.core.data.data_source.local.db.databaseBuilder
-import ir.sahrapanel.app.core.data.data_source.local.db.roomDriver
+import ir.sahrapanel.app.core.data.dataSource.local.db.AppDatabase
+import ir.sahrapanel.app.core.data.dataSource.local.db.appDatabaseMigrations
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.LocationDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.SalonDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.SalonMembershipDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.dao.UserTokenDao
+import ir.sahrapanel.app.core.data.dataSource.local.db.databaseBuilder
+import ir.sahrapanel.app.core.data.dataSource.local.db.roomDriver
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.module.Module
 import org.koin.dsl.module

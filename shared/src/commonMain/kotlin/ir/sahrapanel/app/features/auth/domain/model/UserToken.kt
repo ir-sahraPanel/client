@@ -17,7 +17,7 @@ data class UserTokenWithSalonMemberShips(
     val memberships: List<SalonMembership>
 )
 
-fun UserToken.toEntity(): ir.sahrapanel.app.core.data.data_source.local.db.entity.UserTokenEntity {
+fun UserToken.toEntity(): ir.sahrapanel.app.core.data.dataSource.local.db.entity.UserTokenEntity {
     @OptIn(ExperimentalUuidApi::class)
     return _root_ide_package_.ir.sahrapanel.app.core.data.data_source.local.db.entity.UserTokenEntity(
         id = this.user.id,

@@ -1,26 +1,25 @@
 package ir.sahrapanel.app.core.di
 
-import ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorage
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val secureStorageModule: Module
     get() = module {
-        single<ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorage>(){WasmSecureStorage()}
+        single<ir.sahrapanel.app.core.data.dataSource.local.secureStorage.SecureStorage>(){WasmSecureStorage()}
     }
 
 
 class WasmSecureStorage :
-    ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorage {
-    override suspend fun saveString(key: ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey, value: String) {
+    ir.sahrapanel.app.core.data.dataSource.local.secureStorage.SecureStorage {
+    override suspend fun saveString(key: ir.sahrapanel.app.core.data.dataSource.local.secureStorage.SecureStorageKey, value: String) {
        
     }
 
-    override suspend fun getString(key: ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey): String? {
+    override suspend fun getString(key: ir.sahrapanel.app.core.data.dataSource.local.secureStorage.SecureStorageKey): String? {
        return null
     }
 
-    override suspend fun delete(key: ir.sahrapanel.app.core.data.data_source.local.secure_storage.SecureStorageKey) {
+    override suspend fun delete(key: ir.sahrapanel.app.core.data.dataSource.local.secureStorage.SecureStorageKey) {
 
     }
 

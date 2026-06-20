@@ -2,18 +2,15 @@ package ir.sahrapanel.app.features.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonDao
 import ir.sahrapanel.app.features.auth.domain.repository.AuthRepository
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlin.uuid.Uuid
 
 class SplashViewModel(
     private val authRepository: AuthRepository,
-    private val salonDao: ir.sahrapanel.app.core.data.data_source.local.db.dao.SalonDao
+    private val salonDao: ir.sahrapanel.app.core.data.dataSource.local.db.dao.SalonDao
 ) : ViewModel() {
 
     companion object{
