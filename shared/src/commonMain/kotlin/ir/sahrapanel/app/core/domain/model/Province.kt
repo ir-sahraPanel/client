@@ -1,4 +1,4 @@
-package ir.sahrapanel.app.core.location.domain
+package ir.sahrapanel.app.core.domain.model
 
 data class Province(
     val id: Long,

@@ -3,8 +3,8 @@ package ir.sahrapanel.app.features.create_salon.presentation
 import androidx.compose.runtime.Immutable
 import ir.sahrapanel.app.core.ErrorTarget
 import ir.sahrapanel.app.core.UiErrors
-import ir.sahrapanel.app.core.location.domain.City
-import ir.sahrapanel.app.core.location.domain.Province
+import ir.sahrapanel.app.core.domain.model.City
+import ir.sahrapanel.app.core.domain.model.Province
 import ir.sahrapanel.app.core.ui.components.TranslatableText
 
 sealed interface CreateSalonErrorTarget : ErrorTarget {

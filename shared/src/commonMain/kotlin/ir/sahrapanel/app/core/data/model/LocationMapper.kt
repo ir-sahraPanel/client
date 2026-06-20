@@ -2,8 +2,8 @@ package ir.sahrapanel.app.core.data.model
 
 import ir.sahrapanel.app.core.data.data_source.local.db.entity.CityEntity
 import ir.sahrapanel.app.core.data.data_source.local.db.entity.ProvinceEntity
-import ir.sahrapanel.app.core.location.domain.City
-import ir.sahrapanel.app.core.location.domain.Province
+import ir.sahrapanel.app.core.domain.model.City
+import ir.sahrapanel.app.core.domain.model.Province
 
 // --- Province Mappers ---
 

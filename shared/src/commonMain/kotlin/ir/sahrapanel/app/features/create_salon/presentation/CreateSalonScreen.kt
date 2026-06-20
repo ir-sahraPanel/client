@@ -41,8 +41,8 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import ir.sahrapanel.app.core.errorMessageFor
 import ir.sahrapanel.app.core.hasErrorFor
-import ir.sahrapanel.app.core.location.domain.City
-import ir.sahrapanel.app.core.location.domain.Province
+import ir.sahrapanel.app.core.domain.model.City
+import ir.sahrapanel.app.core.domain.model.Province
 import ir.sahrapanel.app.core.ui.components.DeviceConfiguration
 import ir.sahrapanel.app.core.ui.components.ErrorContainer
 import ir.sahrapanel.app.core.ui.components.FlowRowCard

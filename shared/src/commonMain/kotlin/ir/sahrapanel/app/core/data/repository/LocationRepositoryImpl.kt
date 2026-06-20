@@ -4,9 +4,9 @@ import ir.sahrapanel.app.core.data.data_source.local.db.dao.LocationDao
 import ir.sahrapanel.app.core.data.data_source.remote.LocationDataSource
 import ir.sahrapanel.app.core.data.model.toDomain
 import ir.sahrapanel.app.core.data.model.toEntity
-import ir.sahrapanel.app.core.location.domain.City
-import ir.sahrapanel.app.core.location.domain.LocationRepository
-import ir.sahrapanel.app.core.location.domain.Province
+import ir.sahrapanel.app.core.domain.model.City
+import ir.sahrapanel.app.core.domain.model.LocationRepository
+import ir.sahrapanel.app.core.domain.model.Province
 
 
 class LocationRepositoryImpl(

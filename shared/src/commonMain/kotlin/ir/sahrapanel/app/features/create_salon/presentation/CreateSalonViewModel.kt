@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ir.sahrapanel.app.core.UiErrors
 import ir.sahrapanel.app.core.data.data_source.remote.network.toTranslatableText
-import ir.sahrapanel.app.core.location.domain.LocationRepository
+import ir.sahrapanel.app.core.domain.model.LocationRepository
 import ir.sahrapanel.app.core.ui.components.TranslatableText
 import ir.sahrapanel.app.features.create_salon.data.CreateSalonRequest
 import ir.sahrapanel.app.features.create_salon.data.SalonOwnerRequest
